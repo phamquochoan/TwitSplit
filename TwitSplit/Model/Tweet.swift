@@ -97,6 +97,10 @@ struct Tweet: Equatable {
         return Config.TweetLength - counter.displayText.count - content.count
     }
     
+    var invalidTweet: Bool {
+        return remainSpaces < 0
+    }
+    
     var displayText: String {
         return counter.displayText + content
     }

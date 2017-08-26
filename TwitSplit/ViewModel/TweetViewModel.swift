@@ -10,46 +10,75 @@ import Foundation
 
 class TweetViewModel {
     var items: [Tweet]              = []
-    var counterDigits: Counter      = Counter(index: 1, total: 1)
     var userInputMessage: String    = ""
     
+    var total: Int {
+        return items.count
+    }
     
-    func processMessage(_ string: String, completionHandler: (() -> Void)) {
+    
+    func processMessage(_ string: String, validating: Bool = false) {
         
         guard !string.isEmpty else {
-            items = updateCounters(in: items)
-            completionHandler()
+            items = items.map { Tweet(tweet: $0, counter: Counter(counter: $0.counter, total: total)) }
+            scanForInvalidTweet()
             return
         }
         
-        let searchingRange = Range<String.Index>(string.startIndex..<string.index(string.startIndex, offsetBy: Config.TweetLength))
-        let range: Range<String.Index>
+//        let searchingRange = Range<String.Index>(string.startIndex..<string.index(string.startIndex, offsetBy: Config.TweetLength))
+//        let range: Range<String.Index>
+        let tweetStartIndex: String.Index = string.startIndex
+        let tweetEndIndex: String.Index
         
-        if let x = string.range(of: " ", options: .backwards, range: searchingRange, locale: nil) {
-            range = x
+        if let x = string.range(of: " ", options: .backwards, range: getNextSearchRange(in: string), locale: nil) {
+            tweetEndIndex = x.lowerBound
         } else {
-            range = Range<String.Index>(string.startIndex..<string.endIndex)
+            tweetEndIndex = string.endIndex
         }
         
         items += [
             Tweet(
-                counter: counterDigits,
-                content: string[range.lowerBound...range.upperBound].toString(),
-                tweetStartIndex: range.lowerBound,
-                tweetEndIndex: range.upperBound
+                counter: Counter(index: items.count + 1, total: total + (validating ? 0 : 1)),
+                content: string[tweetStartIndex...tweetEndIndex].toString(),
+                tweetStartIndex: tweetStartIndex,
+                tweetEndIndex: tweetEndIndex
             )
         ]
         
-        counterDigits = Counter(index: counterDigits.index + 1, total: counterDigits.total + 1)
-        
-        let nextString = string.suffix(from: string.index(after: range.upperBound)).toString()
-        processMessage(nextString, completionHandler: completionHandler)
+        let nextString = string.suffix(from: tweetEndIndex).trimmingCharacters(in: .whitespaces)
+        processMessage(nextString)
     }
     
-    func updateCounters(in items: [Tweet]) -> [Tweet] {
-        return items.map {
-            Tweet(tweet: $0, counter: Counter(counter: $0.counter, total: counterDigits.total))
+    private func getNextSearchRange(in string: String) -> Range<String.Index> {
+        let counter = Counter(index: total + 1, total: total + 1)
+        let endIndex = string.index(string.startIndex, offsetBy: Config.TweetLength - counter.displayText.count)
+        return Range<String.Index>(string.startIndex..<endIndex)
+    }
+    
+    private func updateCounters(in items: [Tweet]) -> [Tweet] {
+        let result = items.map {
+            Tweet(tweet: $0, counter: Counter(counter: $0.counter, total: total))
         }
+        
+        return result
+    }
+    
+    private func preCondition(_ string: String) {
+        guard !string.isEmpty else { return }
+        
+    }
+    
+    private func scanForInvalidTweet() {
+        guard let index = items.index(where: { $0.invalidTweet }) else { return }
+        items[index..<items.count] = []
+        let string: String
+        if let lastItem = items.last {
+            string = userInputMessage[lastItem.tweetEndIndex...userInputMessage.endIndex].trimmingCharacters(in: .whitespaces)
+        } else {
+            string = userInputMessage
+        }
+        processMessage(string, validating: true)
+        
     }
    
 }
