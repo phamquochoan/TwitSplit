@@ -16,8 +16,14 @@ class TweetViewModel {
         return items.count
     }
     
+    func convertMessageIntoChunk(message: String) -> [String] {
+        if message.count <= Config.TweetLength { return [message] }
+        userInputMessage = message
+        processMessage(message)
+        return items.map { $0.displayText }
+    }
     
-    func processMessage(_ string: String, validating: Bool = false) {
+    private func processMessage(_ string: String, validating: Bool = false) {
         
         guard !string.isEmpty else {
             items = items.map { Tweet(tweet: $0, counter: Counter(counter: $0.counter, total: total)) }
@@ -25,8 +31,7 @@ class TweetViewModel {
             return
         }
         
-//        let searchingRange = Range<String.Index>(string.startIndex..<string.index(string.startIndex, offsetBy: Config.TweetLength))
-//        let range: Range<String.Index>
+        
         let tweetStartIndex: String.Index = string.startIndex
         let tweetEndIndex: String.Index
         
@@ -39,7 +44,7 @@ class TweetViewModel {
         items += [
             Tweet(
                 counter: Counter(index: items.count + 1, total: total + (validating ? 0 : 1)),
-                content: string[tweetStartIndex...tweetEndIndex].toString(),
+                content: string[tweetStartIndex..<tweetEndIndex].toString(),
                 tweetStartIndex: tweetStartIndex,
                 tweetEndIndex: tweetEndIndex
             )
@@ -51,7 +56,8 @@ class TweetViewModel {
     
     private func getNextSearchRange(in string: String) -> Range<String.Index> {
         let counter = Counter(index: total + 1, total: total + 1)
-        let endIndex = string.index(string.startIndex, offsetBy: Config.TweetLength - counter.displayText.count)
+        let offset = min(string.count, Config.TweetLength - counter.displayText.count)
+        let endIndex = string.index(string.startIndex, offsetBy: offset)
         return Range<String.Index>(string.startIndex..<endIndex)
     }
     
@@ -61,11 +67,6 @@ class TweetViewModel {
         }
         
         return result
-    }
-    
-    private func preCondition(_ string: String) {
-        guard !string.isEmpty else { return }
-        
     }
     
     private func scanForInvalidTweet() {
