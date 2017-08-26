@@ -9,23 +9,23 @@
 import Foundation
 
 func == (lhs: SplitedTweet, rhs: SplitedTweet) -> Bool {
-    return lhs.index == rhs.index
+    return lhs.counter == rhs.counter
 }
 
 struct SplitedTweet: Equatable {
     
-    /// Index of this one inside a tweet
-    let index: Int
-    
-    /// Number of characters of current splited tweet count in a message
-    let tweetCountDigits: Int
+    /// Counter of this message
+    let counter: Counter
     
     /// Content of this splited tweet
     /// Always not empty
     let content: String
     
+    /// Start index of this tweet in a message
+    let tweetStartIndex: String.Index
+    
     /// End index of this tweet in a message
-    let messageEndIndex: String.Index
+    let tweetEndIndex: String.Index
     
     /// Length of the first word in content
     /// - Attention:
@@ -42,8 +42,7 @@ struct SplitedTweet: Equatable {
     /// Remain spaces in this splited tweet
     var remainSpaces: Int {
         // 1 is the white space between counter and content
-        return Config.TweetLength - String(index).count - tweetCountDigits - Config.Joinner.count - content.count - 1
+        return Config.TweetLength - counter.displayText.count - content.count
     }
-    
     
 }

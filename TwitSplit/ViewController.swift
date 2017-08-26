@@ -10,9 +10,12 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var send: UIButton!
+    @IBOutlet weak var textField: UITextField!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        textField.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -23,3 +26,10 @@ class ViewController: UIViewController {
 
 }
 
+extension ViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        print("\(range) --- \(string)")
+        
+        return true
+    }
+}

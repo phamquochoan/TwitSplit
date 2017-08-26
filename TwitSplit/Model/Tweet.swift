@@ -24,7 +24,7 @@ struct Tweet {
         guard let lastItem = items.last else { return userInputMessage }
         // index(after:) will remove the first white space
         return userInputMessage
-            .suffix(from: userInputMessage.index(after: lastItem.messageEndIndex))
+            .suffix(from: userInputMessage.index(after: lastItem.tweetEndIndex))
             .string
     }
     
