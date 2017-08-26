@@ -16,6 +16,7 @@
 		DEC345971F518784000D409A /* SplitedTweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC345951F518784000D409A /* SplitedTweet.swift */; };
 		DEC345981F518784000D409A /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC345961F518784000D409A /* Tweet.swift */; };
 		DEC3459B1F518A05000D409A /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC3459A1F518A05000D409A /* Config.swift */; };
+		DEDB3B4C1F51D6F2003F055A /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB3B4B1F51D6F2003F055A /* StringExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,6 +43,7 @@
 		DEC345951F518784000D409A /* SplitedTweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitedTweet.swift; sourceTree = "<group>"; };
 		DEC345961F518784000D409A /* Tweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
 		DEC3459A1F518A05000D409A /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		DEDB3B4B1F51D6F2003F055A /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 		DEC3456D1F5186D2000D409A /* TwitSplit */ = {
 			isa = PBXGroup;
 			children = (
+				DEDB3B4A1F51D6DF003F055A /* Extensions */,
 				DEC345991F5189EF000D409A /* Config */,
 				DEC345941F518784000D409A /* Model */,
 				DEC3456E1F5186D2000D409A /* AppDelegate.swift */,
@@ -119,6 +122,14 @@
 				DEC3459A1F518A05000D409A /* Config.swift */,
 			);
 			path = Config;
+			sourceTree = "<group>";
+		};
+		DEDB3B4A1F51D6DF003F055A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				DEDB3B4B1F51D6F2003F055A /* StringExtensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -224,6 +235,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEDB3B4C1F51D6F2003F055A /* StringExtensions.swift in Sources */,
 				DEC345711F5186D2000D409A /* ViewController.swift in Sources */,
 				DEC345971F518784000D409A /* SplitedTweet.swift in Sources */,
 				DEC3459B1F518A05000D409A /* Config.swift in Sources */,

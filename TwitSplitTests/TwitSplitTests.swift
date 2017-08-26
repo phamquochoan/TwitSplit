@@ -26,6 +26,13 @@ class TwitSplitTests: XCTestCase {
         // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
     
+    // Test <= 50 characters
+    // Test >50 characters (single word)
+    // Test when tweet count 9 -> 10 (length changing)
+    // Test when tweet count 10 -> 9 (length changing)
+    // Test adding characters in middle of tweet
+    // Test deleting characters in middle of tweet
+    
     func testPerformanceExample() {
         // This is an example of a performance test case.
         self.measure {
