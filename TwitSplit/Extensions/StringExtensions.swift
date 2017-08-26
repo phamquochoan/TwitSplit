@@ -9,7 +9,7 @@
 import Foundation
 
 extension Substring {
-    var string: String {
+    func toString() -> String {
         return String(self)
     }
 }

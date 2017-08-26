@@ -13,7 +13,6 @@
 		DEC345761F5186D2000D409A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEC345751F5186D2000D409A /* Assets.xcassets */; };
 		DEC345791F5186D2000D409A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DEC345771F5186D2000D409A /* LaunchScreen.storyboard */; };
 		DEC345841F5186D2000D409A /* TwitSplitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC345831F5186D2000D409A /* TwitSplitTests.swift */; };
-		DEC345971F518784000D409A /* SplitedTweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC345951F518784000D409A /* SplitedTweet.swift */; };
 		DEC345981F518784000D409A /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC345961F518784000D409A /* Tweet.swift */; };
 		DEC3459B1F518A05000D409A /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC3459A1F518A05000D409A /* Config.swift */; };
 		DEDB3B4C1F51D6F2003F055A /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB3B4B1F51D6F2003F055A /* StringExtensions.swift */; };
@@ -42,7 +41,6 @@
 		DEC3457F1F5186D2000D409A /* TwitSplitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TwitSplitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEC345831F5186D2000D409A /* TwitSplitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitSplitTests.swift; sourceTree = "<group>"; };
 		DEC345851F5186D2000D409A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		DEC345951F518784000D409A /* SplitedTweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitedTweet.swift; sourceTree = "<group>"; };
 		DEC345961F518784000D409A /* Tweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
 		DEC3459A1F518A05000D409A /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		DEDB3B4B1F51D6F2003F055A /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
@@ -116,7 +114,6 @@
 			isa = PBXGroup;
 			children = (
 				DEDB3B4D1F51E21C003F055A /* Counter.swift */,
-				DEC345951F518784000D409A /* SplitedTweet.swift */,
 				DEC345961F518784000D409A /* Tweet.swift */,
 			);
 			path = Model;
@@ -251,7 +248,6 @@
 			files = (
 				DEDB3B4C1F51D6F2003F055A /* StringExtensions.swift in Sources */,
 				DEC345711F5186D2000D409A /* ViewController.swift in Sources */,
-				DEC345971F518784000D409A /* SplitedTweet.swift in Sources */,
 				DEC3459B1F518A05000D409A /* Config.swift in Sources */,
 				DEDB3B511F51E662003F055A /* TweetViewModel.swift in Sources */,
 				DEC3456F1F5186D2000D409A /* AppDelegate.swift in Sources */,
