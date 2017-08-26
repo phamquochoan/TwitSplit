@@ -13,6 +13,9 @@
 		DEC345761F5186D2000D409A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DEC345751F5186D2000D409A /* Assets.xcassets */; };
 		DEC345791F5186D2000D409A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DEC345771F5186D2000D409A /* LaunchScreen.storyboard */; };
 		DEC345841F5186D2000D409A /* TwitSplitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC345831F5186D2000D409A /* TwitSplitTests.swift */; };
+		DEC345971F518784000D409A /* SplitedTweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC345951F518784000D409A /* SplitedTweet.swift */; };
+		DEC345981F518784000D409A /* Tweet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC345961F518784000D409A /* Tweet.swift */; };
+		DEC3459B1F518A05000D409A /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC3459A1F518A05000D409A /* Config.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +39,9 @@
 		DEC3457F1F5186D2000D409A /* TwitSplitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TwitSplitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEC345831F5186D2000D409A /* TwitSplitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwitSplitTests.swift; sourceTree = "<group>"; };
 		DEC345851F5186D2000D409A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DEC345951F518784000D409A /* SplitedTweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplitedTweet.swift; sourceTree = "<group>"; };
+		DEC345961F518784000D409A /* Tweet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tweet.swift; sourceTree = "<group>"; };
+		DEC3459A1F518A05000D409A /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +83,8 @@
 		DEC3456D1F5186D2000D409A /* TwitSplit */ = {
 			isa = PBXGroup;
 			children = (
+				DEC345991F5189EF000D409A /* Config */,
+				DEC345941F518784000D409A /* Model */,
 				DEC3456E1F5186D2000D409A /* AppDelegate.swift */,
 				DEC345701F5186D2000D409A /* ViewController.swift */,
 				DEC345721F5186D2000D409A /* Main.storyboard */,
@@ -94,6 +102,23 @@
 				DEC345851F5186D2000D409A /* Info.plist */,
 			);
 			path = TwitSplitTests;
+			sourceTree = "<group>";
+		};
+		DEC345941F518784000D409A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DEC345951F518784000D409A /* SplitedTweet.swift */,
+				DEC345961F518784000D409A /* Tweet.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DEC345991F5189EF000D409A /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				DEC3459A1F518A05000D409A /* Config.swift */,
+			);
+			path = Config;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -200,7 +225,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				DEC345711F5186D2000D409A /* ViewController.swift in Sources */,
+				DEC345971F518784000D409A /* SplitedTweet.swift in Sources */,
+				DEC3459B1F518A05000D409A /* Config.swift in Sources */,
 				DEC3456F1F5186D2000D409A /* AppDelegate.swift in Sources */,
+				DEC345981F518784000D409A /* Tweet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
