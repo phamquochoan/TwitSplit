@@ -16,35 +16,31 @@ class TweetViewModel {
         return items.count
     }
     
-    func splitMessage(message: String) -> [String] {
-        if message.count <= Config.TweetLength { return [message] }
-        userInputMessage = message
-        processMessage(message.trimmingCharacters(in: .whitespaces))
+    func splitMessage(message: String) throws -> [String] {
+        let messageContent = message.trimmingCharacters(in: .whitespaces)
+        if messageContent.count <= Config.TweetLength { return [messageContent] }
+        userInputMessage = messageContent
+        try processMessage(messageContent)
+    
         return items.map { $0.displayText }
     }
     
-    private func processMessage(_ string: String, validating: Bool = false) {
+    private func processMessage(_ message: String, validating: Bool = false) throws {
         
-        guard !string.isEmpty else {
+        guard !message.isEmpty else {
             items = updateCounters(in: items)
-            scanForInvalidTweet()
+            try scanForInvalidTweet()
             return
         }
         
         let counter = Counter(index: items.count + 1, total: total + (validating ? 0 : 1))
-        let tweetStartIndex: String.Index = string.startIndex
-        let tweetEndIndex: String.Index
-        
-        if let x = string.range(of: " ", options: .backwards, range: getNextSearchRange(in: string, counter: counter), locale: nil) {
-            tweetEndIndex = x.lowerBound
-        } else {
-            tweetEndIndex = string.endIndex
-        }
+        let tweetStartIndex: String.Index = message.startIndex
+        let tweetEndIndex: String.Index = try getTweetEndIndex(in: message, counter: counter)
         
         items += [
             Tweet(
                 counter: counter,
-                content: string[tweetStartIndex..<tweetEndIndex].toString(),
+                content: message[tweetStartIndex..<tweetEndIndex].toString(),
                 tweetStartIndex: tweetStartIndex,
                 tweetEndIndex: tweetEndIndex
             )
@@ -52,14 +48,40 @@ class TweetViewModel {
         
         /// index(after:) is needed to trim the first white spaces on the next message
         /// trimmingCharacters(.whiteSpaces) will violate data intergrity
-        let nextString = string.suffix(from: string.index(after: tweetEndIndex)).toString()
-        processMessage(nextString)
+        let nextString = message.suffix(from: message.index(after: tweetEndIndex)).toString()
+        try processMessage(nextString)
     }
     
-    private func getNextSearchRange(in string: String, counter: Counter) -> Range<String.Index> {
-        let offset = min(string.count, Config.TweetLength - counter.displayText.count)
-        let endIndex = string.index(string.startIndex, offsetBy: offset)
-        return Range<String.Index>(string.startIndex..<endIndex)
+    private func getNextSearchRange(in message: String, counter: Counter) -> Range<String.Index> {
+        let offset = min(message.count, Config.TweetLength - counter.displayText.count)
+        let endIndex = message.index(message.startIndex, offsetBy: offset)
+        return Range<String.Index>(message.startIndex..<endIndex)
+    }
+    
+    private func getTweetEndIndex(in message: String, counter: Counter) throws -> String.Index {
+        
+        /// Search for a `whiteSpace` backward in a valid range (include counter.characters.count)
+        if let validRange = message.range(of: " ", options: .backwards, range: getNextSearchRange(in: message, counter: counter), locale: nil) {
+            return validRange.lowerBound
+        }
+        
+        let nextIndex: String.Index
+        
+        /// Search for `whiteSpace` forward in case we didn't found it in an allowed range
+        /// It maybe too long or at the end of message
+        if let range = message.range(of: " ") {
+            nextIndex = range.lowerBound
+        } else {
+            nextIndex = message.endIndex
+        }
+        
+        /// If `message` contains a word that its length + current counter length > allowed
+        /// Throw an error
+        if message.distance(from: message.startIndex, to: nextIndex) + counter.displayText.count > Config.TweetLength {
+            throw SplitError.exceedsWordLength(message[message.startIndex..<nextIndex].toString())
+        }
+        
+        return message.endIndex
     }
     
     private func updateCounters(in items: [Tweet]) -> [Tweet] {
@@ -68,7 +90,7 @@ class TweetViewModel {
         }
     }
     
-    private func scanForInvalidTweet() {
+    private func scanForInvalidTweet() throws {
         guard let index = items.index(where: { $0.invalidTweet }) else { return }
         items[index..<items.count] = []
         let string: String
@@ -77,7 +99,7 @@ class TweetViewModel {
         } else {
             string = userInputMessage
         }
-        processMessage(string, validating: true)
+        try processMessage(string, validating: true)
         
     }
    
