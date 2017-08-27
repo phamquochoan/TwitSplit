@@ -16,14 +16,14 @@ class TweetViewModel {
         return items.count
     }
     
-    func convertMessageIntoChunk(message: String) -> [String] {
+    func splitMessage(message: String) -> [String] {
         if message.count <= Config.TweetLength { return [message] }
         userInputMessage = message
-        processMessage(message)
+        processMessage(message.trimmingCharacters(in: .whitespaces))
         return items.map { $0.displayText }
     }
     
-    private func processMessage(_ string: String, validating: Bool = false) {
+    private func processMessage(_ string: String, validating: Bool = false) throws {
         
         guard !string.isEmpty else {
             items = items.map { Tweet(tweet: $0, counter: Counter(counter: $0.counter, total: total)) }
@@ -31,11 +31,11 @@ class TweetViewModel {
             return
         }
         
-        
+        let counter = Counter(index: items.count + 1, total: total + (validating ? 0 : 1))
         let tweetStartIndex: String.Index = string.startIndex
         let tweetEndIndex: String.Index
         
-        if let x = string.range(of: " ", options: .backwards, range: getNextSearchRange(in: string), locale: nil) {
+        if let x = string.range(of: " ", options: .backwards, range: getNextSearchRange(in: string, counter: counter), locale: nil) {
             tweetEndIndex = x.lowerBound
         } else {
             tweetEndIndex = string.endIndex
@@ -43,7 +43,7 @@ class TweetViewModel {
         
         items += [
             Tweet(
-                counter: Counter(index: items.count + 1, total: total + (validating ? 0 : 1)),
+                counter: counter,
                 content: string[tweetStartIndex..<tweetEndIndex].toString(),
                 tweetStartIndex: tweetStartIndex,
                 tweetEndIndex: tweetEndIndex
@@ -54,8 +54,7 @@ class TweetViewModel {
         processMessage(nextString)
     }
     
-    private func getNextSearchRange(in string: String) -> Range<String.Index> {
-        let counter = Counter(index: total + 1, total: total + 1)
+    private func getNextSearchRange(in string: String, counter: Counter) -> Range<String.Index> {
         let offset = min(string.count, Config.TweetLength - counter.displayText.count)
         let endIndex = string.index(string.startIndex, offsetBy: offset)
         return Range<String.Index>(string.startIndex..<endIndex)

@@ -38,7 +38,7 @@ class TwitSplitTests: XCTestCase {
                 2. The functionality that splits messages should be a standalone function. Given the above example, its function call would look like:
                 3. The app must be in Swift.
             """
-        let result = viewModel.convertMessageIntoChunk(message: string)
+        let result = viewModel.splitMessage(message: string)
         print(result)
         
         assert(true)
@@ -51,6 +51,7 @@ class TwitSplitTests: XCTestCase {
     // Test when tweet count 10 -> 9 (length changing)
     // Test adding characters in middle of tweet
     // Test deleting characters in middle of tweet
+    // Test exceed length word at begin - middle - end of text
     
     func testPerformanceExample() {
         // This is an example of a performance test case.

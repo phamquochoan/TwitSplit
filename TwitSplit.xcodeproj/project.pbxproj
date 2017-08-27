@@ -18,6 +18,7 @@
 		DEDB3B4C1F51D6F2003F055A /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB3B4B1F51D6F2003F055A /* StringExtensions.swift */; };
 		DEDB3B4E1F51E21C003F055A /* Counter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB3B4D1F51E21C003F055A /* Counter.swift */; };
 		DEDB3B511F51E662003F055A /* TweetViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB3B501F51E662003F055A /* TweetViewModel.swift */; };
+		DEDB3B531F525E20003F055A /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEDB3B521F525E1F003F055A /* Error.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,6 +47,7 @@
 		DEDB3B4B1F51D6F2003F055A /* StringExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
 		DEDB3B4D1F51E21C003F055A /* Counter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Counter.swift; sourceTree = "<group>"; };
 		DEDB3B501F51E662003F055A /* TweetViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TweetViewModel.swift; sourceTree = "<group>"; };
+		DEDB3B521F525E1F003F055A /* Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 			isa = PBXGroup;
 			children = (
 				DEC3459A1F518A05000D409A /* Config.swift */,
+				DEDB3B521F525E1F003F055A /* Error.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -246,6 +249,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEDB3B531F525E20003F055A /* Error.swift in Sources */,
 				DEDB3B4C1F51D6F2003F055A /* StringExtensions.swift in Sources */,
 				DEC345711F5186D2000D409A /* ViewController.swift in Sources */,
 				DEC3459B1F518A05000D409A /* Config.swift in Sources */,
