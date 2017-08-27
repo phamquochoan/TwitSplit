@@ -17,11 +17,13 @@ class TweetViewModel {
     var userInputMessage: String    = ""
     
     /// Maxium tweet count for the current `userInputMessage`
-    var totalTweets: Int = 0
+    var totalTweets: Int            = 0
+    
+    var options: SplitOption        = .none
     
     func splitMessage(message: String) throws -> [String] {
-        let messageContent = message.trimmingCharacters(in: .whitespaces)
-        if messageContent.count <= Config.TweetLength { return [messageContent] }
+        let messageContent = preProcessMessage(message)
+        if messageContent.count <= Config.tweetLimit { return [messageContent] }
         items = []
         totalTweets = 0
         userInputMessage = messageContent
@@ -30,7 +32,30 @@ class TweetViewModel {
         return items.map { $0.displayText }
     }
     
-    /// Convert message into multiple `Tweet` and store them
+    /// Pre-Process user input message
+    ///
+    /// - Parameter message: input message
+    /// - Returns: post-process message
+    private func preProcessMessage(_ message: String) -> String {
+        guard options.rawValue != SplitOption.none.rawValue else {
+            return message.trimmingCharacters(in: .whitespacesAndNewlines)
+        }
+        var result = message.trimmingCharacters(in: .whitespacesAndNewlines)
+        if options.contains(.removeNewLines) {
+            result = result.replacingOccurrences(of: "\n", with: " ")
+        }
+        
+        if options.contains(.removeMultipleWhiteSpaces) {
+            result = result
+                .components(separatedBy: " ")
+                .filter { !$0.isEmpty }
+                .joined(separator: " ")
+        }
+
+        return result
+    }
+    
+    /// Convert message into multiple `Tweet`s and store them
     ///
     /// - Note:
     /// This function will split `message` continuously (recursively) and create a `Tweet` on each valid part of `message`
@@ -42,7 +67,7 @@ class TweetViewModel {
     /// - Parameters:
     ///   - message: the remains of message
     ///   - validating: final step that validate every `Tweet` before finish.
-    ///     False: increase counter after each loop | True: stop increase counter
+    ///     `false`: increase counter after each loop (new `Tweet`) | `true`: stop increase counter (validate `Tweet`)
     /// - Throws: error if contains an exceed word
     private func processMessage(_ message: String, validating: Bool) throws {
         
@@ -71,10 +96,10 @@ class TweetViewModel {
         
         /// index(after:) is needed to trim the first white spaces on the next message
         /// trimmingCharacters(.whiteSpaces) will violate data intergrity
-        let nextString = message.suffix(from: message.index(after: tweetEndIndex)).toString()
-        try processMessage(nextString, validating: validating)
+        let nextMessageIndex = message.index(tweetEndIndex, offsetBy: 1, limitedBy: message.endIndex) ?? message.endIndex
+        let nextMessage = message.suffix(from: nextMessageIndex).trimmingCharacters(in: .whitespaces)
+        try processMessage(nextMessage, validating: validating)
     }
-    
     
     /// Get the next search `range` in `message`
     ///
@@ -83,7 +108,7 @@ class TweetViewModel {
     ///   - counter: counter a.k.a. prefix for current `Tweet`
     /// - Returns: valid and searchable range in message
     private func getNextSearchRange(in message: String, counter: Counter) -> Range<String.Index> {
-        let offset = min(message.count, Config.TweetLength - counter.displayText.count)
+        let offset = min(message.count, Config.tweetLimit - counter.displayText.count)
         let endIndex = message.index(message.startIndex, offsetBy: offset)
         return Range<String.Index>(message.startIndex..<endIndex)
     }
@@ -115,13 +140,12 @@ class TweetViewModel {
         
         /// If `message` contains a word that its length + current counter length > allowed
         /// Throw an error
-        if message.distance(from: message.startIndex, to: nextIndex) + counter.displayText.count > Config.TweetLength {
+        if message.distance(from: message.startIndex, to: nextIndex) + counter.displayText.count > Config.tweetLimit {
             throw SplitError.exceedsWordLength(message[message.startIndex..<nextIndex].toString())
         }
         
         return message.endIndex
     }
-    
     
     /// Update `counter` in `Tweet`s
     ///
@@ -133,7 +157,6 @@ class TweetViewModel {
                 Tweet(tweet: item, counter: Counter(index: index, total: count))
             }
     }
-    
     
     /// Validate `Tweet`s value
     /// If there is an invalid tweet, re-calculate from its index

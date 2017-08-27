@@ -94,7 +94,7 @@ struct Tweet: Equatable {
     /// Remain spaces in this splited tweet
     var remainSpaces: Int {
         // 1 is the white space between counter and content
-        return Config.TweetLength - counter.displayText.count - content.count
+        return Config.tweetLimit - counter.displayText.count - content.count
     }
     
     var invalidTweet: Bool {

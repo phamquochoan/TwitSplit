@@ -9,7 +9,7 @@
 import Foundation
 
 struct Config {
-    static let TweetLength: Int = 50
-    static let Joinner: String = "/"
+    static let tweetLimit: Int = 50
+    static let joinner: String = "/"
 }
 

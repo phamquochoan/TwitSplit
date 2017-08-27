@@ -28,6 +28,6 @@ struct Counter: Equatable {
     }
     
     var displayText: String {
-        return String(index) + Config.Joinner + String(total) + " "
+        return String(index) + Config.joinner + String(total) + " "
     }
 }
