@@ -97,7 +97,7 @@ class TweetViewModel {
         /// index(after:) is needed to trim the first white spaces on the next message
         /// trimmingCharacters(.whiteSpaces) will violate data intergrity
         let nextMessageIndex = message.index(tweetEndIndex, offsetBy: 1, limitedBy: message.endIndex) ?? message.endIndex
-        let nextMessage = message.suffix(from: nextMessageIndex).trimmingCharacters(in: .whitespaces)
+        let nextMessage = message.suffix(from: nextMessageIndex).toString()
         try processMessage(nextMessage, validating: validating)
     }
     
@@ -108,7 +108,7 @@ class TweetViewModel {
     ///   - counter: counter a.k.a. prefix for current `Tweet`
     /// - Returns: valid and searchable range in message
     private func getNextSearchRange(in message: String, counter: Counter) -> Range<String.Index> {
-        let offset = min(message.count, Config.tweetLimit - counter.displayText.count)
+        let offset = min(message.count, Config.tweetLimit - counter.displayText.count + 1)
         let endIndex = message.index(message.startIndex, offsetBy: offset)
         return Range<String.Index>(message.startIndex..<endIndex)
     }
@@ -123,8 +123,15 @@ class TweetViewModel {
     /// - Throws:
     private func getTweetEndIndex(in message: String, counter: Counter) throws -> String.Index {
         
+        let nextRange = getNextSearchRange(in: message, counter: counter)
+        
+        /// Reached end of message
+        if nextRange.upperBound == message.endIndex  {
+            return message.endIndex
+        }
+        
         /// Search for a `whiteSpace` backward in a valid range (include counter.characters.count)
-        if let validRange = message.range(of: " ", options: .backwards, range: getNextSearchRange(in: message, counter: counter), locale: nil) {
+        if let validRange = message.range(of: " ", options: .backwards, range: nextRange, locale: nil) {
             return validRange.lowerBound
         }
         
