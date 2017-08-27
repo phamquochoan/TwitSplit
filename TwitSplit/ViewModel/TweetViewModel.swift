@@ -23,10 +23,10 @@ class TweetViewModel {
         return items.map { $0.displayText }
     }
     
-    private func processMessage(_ string: String, validating: Bool = false) throws {
+    private func processMessage(_ string: String, validating: Bool = false) {
         
         guard !string.isEmpty else {
-            items = items.map { Tweet(tweet: $0, counter: Counter(counter: $0.counter, total: total)) }
+            items = updateCounters(in: items)
             scanForInvalidTweet()
             return
         }
@@ -50,7 +50,9 @@ class TweetViewModel {
             )
         ]
         
-        let nextString = string.suffix(from: tweetEndIndex).trimmingCharacters(in: .whitespaces)
+        /// index(after:) is needed to trim the first white spaces on the next message
+        /// trimmingCharacters(.whiteSpaces) will violate data intergrity
+        let nextString = string.suffix(from: string.index(after: tweetEndIndex)).toString()
         processMessage(nextString)
     }
     
@@ -61,11 +63,9 @@ class TweetViewModel {
     }
     
     private func updateCounters(in items: [Tweet]) -> [Tweet] {
-        let result = items.map {
+        return items.map {
             Tweet(tweet: $0, counter: Counter(counter: $0.counter, total: total))
         }
-        
-        return result
     }
     
     private func scanForInvalidTweet() {
@@ -73,7 +73,7 @@ class TweetViewModel {
         items[index..<items.count] = []
         let string: String
         if let lastItem = items.last {
-            string = userInputMessage[lastItem.tweetEndIndex...userInputMessage.endIndex].trimmingCharacters(in: .whitespaces)
+            string = userInputMessage[lastItem.tweetEndIndex..<userInputMessage.endIndex].trimmingCharacters(in: .whitespaces)
         } else {
             string = userInputMessage
         }
