@@ -30,7 +30,6 @@ class TweetViewModel {
         return items.map { $0.displayText }
     }
     
-    
     /// Convert message into multiple `Tweet` and store them
     ///
     /// - Note:
@@ -48,8 +47,7 @@ class TweetViewModel {
     private func processMessage(_ message: String, validating: Bool) throws {
         
         guard !message.isEmpty else {
-            items = updateCounters(in: items)
-            try scanForInvalidTweet()
+            try validateTweets()
             return
         }
         
@@ -78,12 +76,26 @@ class TweetViewModel {
     }
     
     
+    /// Get the next search `range` in `message`
+    ///
+    /// - Parameters:
+    ///   - message: message
+    ///   - counter: counter a.k.a. prefix for current `Tweet`
+    /// - Returns: valid and searchable range in message
     private func getNextSearchRange(in message: String, counter: Counter) -> Range<String.Index> {
         let offset = min(message.count, Config.TweetLength - counter.displayText.count)
         let endIndex = message.index(message.startIndex, offsetBy: offset)
         return Range<String.Index>(message.startIndex..<endIndex)
     }
     
+    
+    /// Get the next end index in `message` in order to create a new `Tweet`
+    ///
+    /// - Parameters:
+    ///   - message: message
+    ///   - counter: counter for current `Tweet`
+    /// - Returns: index inside the message
+    /// - Throws:
     private func getTweetEndIndex(in message: String, counter: Counter) throws -> String.Index {
         
         /// Search for a `whiteSpace` backward in a valid range (include counter.characters.count)
@@ -110,6 +122,11 @@ class TweetViewModel {
         return message.endIndex
     }
     
+    
+    /// Update `counter` in `Tweet`s
+    ///
+    /// - Parameter items: items that need to be updated
+    /// - Returns: updated `Tweet`s
     private func updateCounters(in items: [Tweet]) -> [Tweet] {
         return zip((1...items.count), items)
             .map { [count = items.count] index, item in
@@ -117,12 +134,18 @@ class TweetViewModel {
             }
     }
     
-    private func scanForInvalidTweet() throws {
+    
+    /// Validate `Tweet`s value
+    /// If there is an invalid tweet, re-calculate from its index
+    ///
+    /// - Throws:
+    private func validateTweets() throws {
+        items = updateCounters(in: items)
         guard let index = items.index(where: { $0.invalidTweet }) else { return }
         items[index..<items.count] = []
         let string: String
         if let lastItem = items.last {
-            string = userInputMessage[lastItem.tweetEndIndex..<userInputMessage.endIndex].trimmingCharacters(in: .whitespaces)
+            string = userInputMessage[userInputMessage.index(after: lastItem.tweetEndIndex)..<userInputMessage.endIndex].toString()
         } else {
             string = userInputMessage
         }
