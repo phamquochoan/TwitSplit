@@ -21,6 +21,11 @@ class TweetViewModel {
     
     var options: SplitOption        = .none
     
+    /// Split user input message in to chunks with added counting prefix
+    ///
+    /// - Parameter message: user input
+    /// - Returns: sub-message with counter
+    /// - Throws:
     func splitMessage(message: String) throws -> [String] {
         let messageContent = preProcessMessage(message)
         if messageContent.count <= Config.tweetLimit { return [messageContent] }
@@ -37,10 +42,12 @@ class TweetViewModel {
     /// - Parameter message: input message
     /// - Returns: post-process message
     private func preProcessMessage(_ message: String) -> String {
-        guard options.rawValue != SplitOption.none.rawValue else {
-            return message.trimmingCharacters(in: .whitespacesAndNewlines)
-        }
         var result = message.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard options.rawValue != SplitOption.none.rawValue else {
+            return result
+        }
+        
         if options.contains(.removeNewLines) {
             result = result.replacingOccurrences(of: "\n", with: " ")
         }
@@ -72,15 +79,18 @@ class TweetViewModel {
     private func processMessage(_ message: String, validating: Bool) throws {
         
         guard !message.isEmpty else {
-            try validateTweets()
+            try validateTweets(message: nil)
             return
         }
+        
+        let currentMaximumTweetCount = totalTweets
         
         /// - processing: totalTweets = item.count + 1
         /// - validating: get max of `totalTweets` and count
         /// In case item.count keeps increasing
         /// For example: 999 -> 1000 (then we will have to validate one more time)
         totalTweets = max(items.count + 1, totalTweets + (validating ? 0 : 1))
+        
         let counter = Counter(index: items.count + 1, total: totalTweets)
         let tweetStartIndex: String.Index = message.startIndex
         let tweetEndIndex: String.Index = try getTweetEndIndex(in: message, counter: counter)
@@ -93,6 +103,19 @@ class TweetViewModel {
                 tweetEndIndex: tweetEndIndex
             )
         ]
+        
+        /// If number of digits changed
+        /// Re-calculate generated `Tweet`s
+        /// Preventing a special case where we have to re-calculate multiple times
+        /// For example: we have 1/1, 2/2 ... 99/99 | validate: 1/99, 2/99 ...
+        /// -> Index 1 exceeds 50 characters limit -> Regenerate
+        /// On the second times, it goes up to 100/100, 101/101.
+        /// -> Validate, index 2 exceeds 50 characters limit -> Regenerate again and validate again
+        /// So when it goes to 10 items, we validate first 10 immediately and save some calculation.
+        guard String(currentMaximumTweetCount).count == String(totalTweets).count else {
+            try validateTweets(message: message)
+            return
+        }
         
         /// index(after:) is needed to trim the first white spaces on the next message
         /// trimmingCharacters(.whiteSpaces) will violate data intergrity
@@ -137,7 +160,8 @@ class TweetViewModel {
         
         let nextIndex: String.Index
         
-        /// Search for `whiteSpace` forward in case we didn't found it in an allowed range
+        /// Search for `whiteSpace` forward
+        /// In case we didn't found it in an allowed range
         /// It maybe too long or at the end of message
         if let range = message.range(of: " ") {
             nextIndex = range.lowerBound
@@ -169,9 +193,14 @@ class TweetViewModel {
     /// If there is an invalid tweet, re-calculate from its index
     ///
     /// - Throws:
-    private func validateTweets() throws {
+    private func validateTweets(message: String?) throws {
         items = updateCounters(in: items)
-        guard let index = items.index(where: { $0.invalidTweet }) else { return }
+        guard let index = items.index(where: { $0.invalidTweet }) else {
+            if let message = message {
+                try processMessage(message, validating: false)
+            }
+            return
+        }
         items[index..<items.count] = []
         let string: String
         if let lastItem = items.last {

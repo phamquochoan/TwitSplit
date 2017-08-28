@@ -59,7 +59,9 @@ class TwitSplitTests: XCTestCase {
     // Test adding characters in middle of tweet
     // Test deleting characters in middle of tweet
     // Test exceed length word at begin - middle - end of text
-    // Test option
+    // Test option - preprocess
+    // Test validate
+    
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
