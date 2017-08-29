@@ -37,6 +37,7 @@
 /* Begin PBXFileReference section */
 		DE0BAB061F5470C8006CB669 /* OptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionTests.swift; sourceTree = "<group>"; };
 		DE0BAB081F547C86006CB669 /* Big.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Big.txt; sourceTree = "<group>"; };
+		DE2783391F55C05D003F22E9 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DE44248E1F530D19001B21F3 /* Option.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		DEC3456B1F5186D2000D409A /* TwitSplit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitSplit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEC3456E1F5186D2000D409A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -122,6 +123,7 @@
 		DEC3456D1F5186D2000D409A /* TwitSplit */ = {
 			isa = PBXGroup;
 			children = (
+				DE2783391F55C05D003F22E9 /* README.md */,
 				DEC3456E1F5186D2000D409A /* AppDelegate.swift */,
 				DEC345991F5189EF000D409A /* Config */,
 				DEC345941F518784000D409A /* Model */,
