@@ -33,7 +33,6 @@ class TweetViewModel {
         totalTweets = 0
         userInputMessage = messageContent
         try processMessage(messageContent, validating: false)
-    
         return items.map { $0.displayText }
     }
     
@@ -101,7 +100,7 @@ class TweetViewModel {
                 tweetEndIndex: tweetEndIndex
             )
         ]
-
+        
         /// index(after:) is needed to trim the first white spaces on the next message
         /// trimmingCharacters(.whiteSpaces) will violate data intergrity
         let nextMessageIndex = message.index(tweetEndIndex, offsetBy: 1, limitedBy: message.endIndex) ?? message.endIndex
@@ -183,6 +182,7 @@ class TweetViewModel {
         guard let index = items.index(where: { $0.invalidTweet }) else {
             return
         }
+        
         items[index..<items.count] = []
         let string: String
         if let lastItem = items.last {
