@@ -74,6 +74,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DE0F73ED1F55BC8F0016A798 /* Storyboard */ = {
+			isa = PBXGroup;
+			children = (
+				DEC345721F5186D2000D409A /* Main.storyboard */,
+				DEC345771F5186D2000D409A /* LaunchScreen.storyboard */,
+			);
+			path = Storyboard;
+			sourceTree = "<group>";
+		};
+		DE0F73EE1F55BCA00016A798 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DEC345751F5186D2000D409A /* Assets.xcassets */,
+				DE0BAB081F547C86006CB669 /* Big.txt */,
+				DEC3457A1F5186D2000D409A /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		DE0F73EF1F55BCBC0016A798 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				DEC345701F5186D2000D409A /* ViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		DEC345621F5186D2000D409A = {
 			isa = PBXGroup;
 			children = (
@@ -95,16 +122,14 @@
 		DEC3456D1F5186D2000D409A /* TwitSplit */ = {
 			isa = PBXGroup;
 			children = (
-				DEDB3B4A1F51D6DF003F055A /* Extensions */,
-				DEC345991F5189EF000D409A /* Config */,
-				DEDB3B4F1F51E64C003F055A /* ViewModel */,
-				DEC345941F518784000D409A /* Model */,
 				DEC3456E1F5186D2000D409A /* AppDelegate.swift */,
-				DEC345701F5186D2000D409A /* ViewController.swift */,
-				DEC345721F5186D2000D409A /* Main.storyboard */,
-				DEC345751F5186D2000D409A /* Assets.xcassets */,
-				DEC345771F5186D2000D409A /* LaunchScreen.storyboard */,
-				DEC3457A1F5186D2000D409A /* Info.plist */,
+				DEC345991F5189EF000D409A /* Config */,
+				DEC345941F518784000D409A /* Model */,
+				DEDB3B4F1F51E64C003F055A /* ViewModel */,
+				DE0F73EF1F55BCBC0016A798 /* Controllers */,
+				DEDB3B4A1F51D6DF003F055A /* Extensions */,
+				DE0F73ED1F55BC8F0016A798 /* Storyboard */,
+				DE0F73EE1F55BCA00016A798 /* Resources */,
 			);
 			path = TwitSplit;
 			sourceTree = "<group>";
@@ -112,7 +137,6 @@
 		DEC345821F5186D2000D409A /* TwitSplitTests */ = {
 			isa = PBXGroup;
 			children = (
-				DE0BAB081F547C86006CB669 /* Big.txt */,
 				DEC345831F5186D2000D409A /* TwitSplitTests.swift */,
 				DEC345851F5186D2000D409A /* Info.plist */,
 				DE0BAB061F5470C8006CB669 /* OptionTests.swift */,
