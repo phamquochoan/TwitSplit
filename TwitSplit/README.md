@@ -9,7 +9,7 @@ There was a bug while working with `Substring` and `Substring.Index` that makes 
 Unfortunately, `String.Index`, `Substring.Index` and `Range<String.Index>` are not producing debug-friendly message at this moment.
 Therefore, I was unable to track it down to see if it is a programming error or Swift bug.
 
-If you could found the error, please let me know by creating a pull request.
+If it's allowed, we should file a radar report about this bug or if you could found the error, please let me know.
 I would really appreciate it.
 Thank you.
 
