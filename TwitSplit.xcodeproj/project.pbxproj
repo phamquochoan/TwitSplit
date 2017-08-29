@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE0BAB071F5470C8006CB669 /* OptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE0BAB061F5470C8006CB669 /* OptionTests.swift */; };
+		DE0BAB0A1F547E8C006CB669 /* Big.txt in Resources */ = {isa = PBXBuildFile; fileRef = DE0BAB081F547C86006CB669 /* Big.txt */; };
 		DE44248F1F530D19001B21F3 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE44248E1F530D19001B21F3 /* Option.swift */; };
 		DEC3456F1F5186D2000D409A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC3456E1F5186D2000D409A /* AppDelegate.swift */; };
 		DEC345711F5186D2000D409A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DEC345701F5186D2000D409A /* ViewController.swift */; };
@@ -33,6 +35,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DE0BAB061F5470C8006CB669 /* OptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionTests.swift; sourceTree = "<group>"; };
+		DE0BAB081F547C86006CB669 /* Big.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Big.txt; sourceTree = "<group>"; };
 		DE44248E1F530D19001B21F3 /* Option.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		DEC3456B1F5186D2000D409A /* TwitSplit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TwitSplit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEC3456E1F5186D2000D409A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -108,8 +112,10 @@
 		DEC345821F5186D2000D409A /* TwitSplitTests */ = {
 			isa = PBXGroup;
 			children = (
+				DE0BAB081F547C86006CB669 /* Big.txt */,
 				DEC345831F5186D2000D409A /* TwitSplitTests.swift */,
 				DEC345851F5186D2000D409A /* Info.plist */,
+				DE0BAB061F5470C8006CB669 /* OptionTests.swift */,
 			);
 			path = TwitSplitTests;
 			sourceTree = "<group>";
@@ -235,6 +241,7 @@
 				DEC345791F5186D2000D409A /* LaunchScreen.storyboard in Resources */,
 				DEC345761F5186D2000D409A /* Assets.xcassets in Resources */,
 				DEC345741F5186D2000D409A /* Main.storyboard in Resources */,
+				DE0BAB0A1F547E8C006CB669 /* Big.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -268,6 +275,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE0BAB071F5470C8006CB669 /* OptionTests.swift in Sources */,
 				DEC345841F5186D2000D409A /* TwitSplitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

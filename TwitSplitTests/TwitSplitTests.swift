@@ -11,6 +11,8 @@ import XCTest
 
 class TwitSplitTests: XCTestCase {
     
+    let viewModel = TweetViewModel()
+    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -18,6 +20,7 @@ class TwitSplitTests: XCTestCase {
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
+        viewModel.options = .none
         super.tearDown()
     }
     
@@ -25,7 +28,7 @@ class TwitSplitTests: XCTestCase {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         
-        let viewModel = TweetViewModel()
+        
         viewModel.options = [.removeMultipleWhiteSpaces, .removeNewLines]
         let string = """
             We want to see how you create a new projectzz and what technologies you decide to you use. A good project will be cleanly structured, will only contain the dependencies it needs, and will be well-documented and well-tested. What matters is not the technologies you use, but the reasons for your decisions. Bonus points will be given for demonstrating knowledge of modern Swift techniques and best practices1. Create an iOS application that serves the Tweeter interface. It will support the following functionality:
@@ -51,6 +54,21 @@ class TwitSplitTests: XCTestCase {
         assert(true)
     }
     
+    
+    /// Message <= 50 characters
+    func testMessageLessThanOrEqualCharactersLimit() {
+        let string = "123456789_123456789_123456789_123456789_123456789_"
+        XCTAssert(try viewModel.splitMessage(message: string) == [string])
+    }
+    
+    /// Message > 50 characters
+    func testMessageExceedCharactersLimit() {
+        let string = "123456789_123456789_123456789_123456789_123456789_1"
+        XCTAssertThrowsError(try viewModel.splitMessage(message: string))
+    }
+    
+    
+    
     // Test <= 50 characters
     // Test >50 characters (single word)
     // New line characters
@@ -65,9 +83,14 @@ class TwitSplitTests: XCTestCase {
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
+        viewModel.options = [.removeMultipleWhiteSpaces, .removeNewLines]
+        guard let path = Bundle.main.path(forResource: "Big", ofType: "txt") else { return }
+        let string = try! String(contentsOfFile: path)
         self.measure {
-            // Put the code you want to measure the time of here.
+            _ = try! viewModel.splitMessage(message: string)
         }
+    
+        
     }
     
 }

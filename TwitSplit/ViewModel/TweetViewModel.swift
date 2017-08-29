@@ -11,13 +11,13 @@ import Foundation
 class TweetViewModel {
     
     /// `Tweet` storage
-    var items: [Tweet]              = []
+    private(set) var items: [Tweet]              = []
     
     /// User input message
-    var userInputMessage: String    = ""
+    private(set) var userInputMessage: String    = ""
     
     /// Maxium tweet count for the current `userInputMessage`
-    var totalTweets: Int            = 0
+    private(set) var totalTweets: Int            = 0
     
     var options: SplitOption        = .none
     
@@ -79,11 +79,9 @@ class TweetViewModel {
     private func processMessage(_ message: String, validating: Bool) throws {
         
         guard !message.isEmpty else {
-            try validateTweets(message: nil)
+            try validateTweets()
             return
         }
-        
-        let currentMaximumTweetCount = totalTweets
         
         /// - processing: totalTweets = item.count + 1
         /// - validating: get max of `totalTweets` and count
@@ -103,20 +101,7 @@ class TweetViewModel {
                 tweetEndIndex: tweetEndIndex
             )
         ]
-        
-        /// If number of digits changed
-        /// Re-calculate generated `Tweet`s
-        /// Preventing a special case where we have to re-calculate multiple times
-        /// For example: we have 1/1, 2/2 ... 99/99 | validate: 1/99, 2/99 ...
-        /// -> Index 1 exceeds 50 characters limit -> Regenerate
-        /// On the second times, it goes up to 100/100, 101/101.
-        /// -> Validate, index 2 exceeds 50 characters limit -> Regenerate again and validate again
-        /// So when it goes to 10 items, we validate first 10 immediately and save some calculation.
-        guard String(currentMaximumTweetCount).count == String(totalTweets).count else {
-            try validateTweets(message: message)
-            return
-        }
-        
+
         /// index(after:) is needed to trim the first white spaces on the next message
         /// trimmingCharacters(.whiteSpaces) will violate data intergrity
         let nextMessageIndex = message.index(tweetEndIndex, offsetBy: 1, limitedBy: message.endIndex) ?? message.endIndex
@@ -193,12 +178,9 @@ class TweetViewModel {
     /// If there is an invalid tweet, re-calculate from its index
     ///
     /// - Throws:
-    private func validateTweets(message: String?) throws {
+    private func validateTweets() throws {
         items = updateCounters(in: items)
         guard let index = items.index(where: { $0.invalidTweet }) else {
-            if let message = message {
-                try processMessage(message, validating: false)
-            }
             return
         }
         items[index..<items.count] = []
@@ -208,7 +190,7 @@ class TweetViewModel {
         } else {
             string = userInputMessage
         }
-        try processMessage(string, validating: false)
+        try processMessage(string, validating: true)
         
     }
    
