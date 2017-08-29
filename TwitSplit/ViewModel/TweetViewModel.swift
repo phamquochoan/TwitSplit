@@ -32,7 +32,7 @@ class TweetViewModel {
         items = []
         totalTweets = 0
         userInputMessage = messageContent
-        try processMessage(messageContent, validating: false)
+        try processMessage(Substring(userInputMessage), validating: false)
     
         return items.map { $0.displayText }
     }
@@ -76,8 +76,8 @@ class TweetViewModel {
     ///   - validating: final step that validate every `Tweet` before finish.
     ///     `false`: increase counter after each loop (new `Tweet`) | `true`: stop increase counter (validate `Tweet`)
     /// - Throws: error if contains an exceed word
-    private func processMessage(_ message: String, validating: Bool) throws {
-        
+    private func processMessage(_ message: Substring, validating: Bool) throws {
+        print(message[message.startIndex..<message.index(message.startIndex, offsetBy: 100, limitedBy: message.endIndex)!])
         guard !message.isEmpty else {
             try validateTweets()
             return
@@ -90,8 +90,8 @@ class TweetViewModel {
         totalTweets = max(items.count + 1, totalTweets + (validating ? 0 : 1))
         
         let counter = Counter(index: items.count + 1, total: totalTweets)
-        let tweetStartIndex: String.Index = message.startIndex
-        let tweetEndIndex: String.Index = try getTweetEndIndex(in: message, counter: counter)
+        let tweetStartIndex: Substring.Index = message.startIndex
+        let tweetEndIndex: Substring.Index = try getTweetEndIndex(in: message, counter: counter)
         
         items += [
             Tweet(
@@ -105,7 +105,7 @@ class TweetViewModel {
         /// index(after:) is needed to trim the first white spaces on the next message
         /// trimmingCharacters(.whiteSpaces) will violate data intergrity
         let nextMessageIndex = message.index(tweetEndIndex, offsetBy: 1, limitedBy: message.endIndex) ?? message.endIndex
-        let nextMessage = message.suffix(from: nextMessageIndex).toString()
+        let nextMessage = message.suffix(from: nextMessageIndex)
         try processMessage(nextMessage, validating: validating)
     }
     
@@ -115,10 +115,10 @@ class TweetViewModel {
     ///   - message: message
     ///   - counter: counter a.k.a. prefix for current `Tweet`
     /// - Returns: valid and searchable range in message
-    private func getNextSearchRange(in message: String, counter: Counter) -> Range<String.Index> {
+    private func getNextSearchRange(in message: Substring, counter: Counter) -> Range<Substring.Index> {
         let offset = min(message.count, Config.tweetLimit - counter.displayText.count + 1)
         let endIndex = message.index(message.startIndex, offsetBy: offset)
-        return Range<String.Index>(message.startIndex..<endIndex)
+        return Range<Substring.Index>(message.startIndex..<endIndex)
     }
     
     
@@ -129,7 +129,7 @@ class TweetViewModel {
     ///   - counter: counter for current `Tweet`
     /// - Returns: index inside the message
     /// - Throws:
-    private func getTweetEndIndex(in message: String, counter: Counter) throws -> String.Index {
+    private func getTweetEndIndex(in message: Substring, counter: Counter) throws -> Substring.Index {
         
         let nextRange = getNextSearchRange(in: message, counter: counter)
         
@@ -143,7 +143,7 @@ class TweetViewModel {
             return validRange.lowerBound
         }
         
-        let nextIndex: String.Index
+        let nextIndex: Substring.Index
         
         /// Search for `whiteSpace` forward
         /// In case we didn't found it in an allowed range
@@ -184,11 +184,11 @@ class TweetViewModel {
             return
         }
         items[index..<items.count] = []
-        let string: String
+        let string: Substring
         if let lastItem = items.last {
-            string = userInputMessage[userInputMessage.index(after: lastItem.tweetEndIndex)..<userInputMessage.endIndex].toString()
+            string = userInputMessage.suffix(from: userInputMessage.index(after: lastItem.tweetEndIndex))
         } else {
-            string = userInputMessage
+            string = Substring(userInputMessage)
         }
         try processMessage(string, validating: true)
         
