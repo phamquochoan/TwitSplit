@@ -31,8 +31,9 @@ class TweetViewModel {
         if messageContent.count <= Config.tweetLimit { return [messageContent] }
         items = []
         totalTweets = 0
-        userInputMessage = messageContent
-        try processMessage(messageContent, validating: false)
+        /// Adding white space for the first `Tweet`
+        userInputMessage = " " + messageContent
+        try processMessage(userInputMessage, validating: false)
         return items.map { $0.displayText }
     }
     
@@ -101,10 +102,7 @@ class TweetViewModel {
             )
         ]
         
-        /// index(after:) is needed to trim the first white spaces on the next message
-        /// trimmingCharacters(.whiteSpaces) will violate data intergrity
-        let nextMessageIndex = message.index(tweetEndIndex, offsetBy: 1, limitedBy: message.endIndex) ?? message.endIndex
-        let nextMessage = message.suffix(from: nextMessageIndex).toString()
+        let nextMessage = message.suffix(from: tweetEndIndex).toString()
         try processMessage(nextMessage, validating: validating)
     }
     
@@ -186,7 +184,7 @@ class TweetViewModel {
         items[index..<items.count] = []
         let string: String
         if let lastItem = items.last {
-            string = userInputMessage[userInputMessage.index(after: lastItem.tweetEndIndex)..<userInputMessage.endIndex].toString()
+            string = userInputMessage[lastItem.tweetEndIndex..<userInputMessage.endIndex].toString()
         } else {
             string = userInputMessage
         }
