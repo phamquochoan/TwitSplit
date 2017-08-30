@@ -5,6 +5,7 @@ use_frameworks!
 project 'TwitSplit.xcodeproj'
 
 target 'TwitSplit' do
-    pod 'SnapKit', '~> 3.2.0'
+    pod 'SnapKit', :git => 'https://github.com/SnapKit/SnapKit.git', :branch => 'swift-4'
+    pod 'SwiftMessages', :git => 'https://github.com/SwiftKickMobile/SwiftMessages.git', :branch => 'swift4.0'
 end
 
