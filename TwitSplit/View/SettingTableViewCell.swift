@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 
+/// Cell with a switch, used in `SettingViewController`
 class SettingTableViewCell: UITableViewCell {
     static let identifier: String = "settingCellIdentifier"
     private var switchControl: UISwitch!

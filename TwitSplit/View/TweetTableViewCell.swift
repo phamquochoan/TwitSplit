@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 
+/// Display a `Tweet` content.
 class TweetTableViewCell: UITableViewCell {
     static let identifier: String = "tweetCellIdentifier"
     private var counterLabel: UILabel!

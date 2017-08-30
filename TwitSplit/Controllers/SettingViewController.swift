@@ -63,8 +63,7 @@ extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
         cell.switchChanged = { [unowned self] value in
             if value {
                 self.option.insert(row.rowOption)
-            }
-            else {
+            } else {
                 self.option.remove(row.rowOption)
             }
             
@@ -75,7 +74,11 @@ extension SettingViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+
+// MARK: - ROW
 extension SettingViewController {
+    
+    /// Predefined rows for table view
     enum Row: Int {
         case newLine
         case multipleWhiteSpaces
@@ -102,6 +105,8 @@ extension SettingViewController {
     }
 }
 
+
+// MARK: - SETUP VIEWS AND CONSTRAINTS
 extension SettingViewController {
     private func setupViews() {
         title = "Setting"

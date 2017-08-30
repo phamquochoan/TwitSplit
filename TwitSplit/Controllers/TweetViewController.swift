@@ -14,11 +14,15 @@ class TweetViewController: UIViewController {
     
     private var table: UITableView!
     private var input: InputView!
+    
+    /// Show warning message with user input exceed limit word
     private var warning: MessageView!
     
-    private var didSetupConstraints: Bool = false
+    /// Constraint to the bottom of input
+    /// This will changed when keyboard show/hide.
     private var inputBottomConstraint: Constraint!
-
+    private var didSetupConstraints: Bool = false
+    
     private var tweetViewModel = TweetViewModel()
     private var data: [[String]] = [
         [
@@ -41,6 +45,8 @@ class TweetViewController: UIViewController {
         super.viewDidLoad()
         setupViews()
         view.setNeedsUpdateConstraints()
+        
+        /// Listen for keyboard's frame
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(keyboardNotification(_:)),
@@ -49,6 +55,10 @@ class TweetViewController: UIViewController {
         )
     }
     
+    
+    /// Animate subviews on screen when keyboard show/hide
+    ///
+    /// - Parameter notification:
     @objc private func keyboardNotification(_ notification: Notification) {
         guard
             let info = notification.userInfo,
@@ -68,6 +78,7 @@ class TweetViewController: UIViewController {
         }
     }
     
+    /// Selector for right bar button item
     @objc private func goToSettingController() {
         let controller = SettingViewController()
         controller.option = tweetViewModel.options
@@ -75,6 +86,13 @@ class TweetViewController: UIViewController {
         navigationController?.pushViewController(controller, animated: true)
     }
     
+    
+    /// Selector for `Send` button
+    ///
+    /// If there is valid user input message
+    /// Splits and shows it on screen if success
+    /// Otherwise shows warning message
+    /// - Parameter sender:
     @objc private func sendTweet(_ sender: UIButton!) {
         guard !input.textView.text.isEmpty && input.hasUserInputContent else { return }
         do {
@@ -90,6 +108,8 @@ class TweetViewController: UIViewController {
         }
     }
     
+    /// Scroll to the latest `Tweet` on screen
+    /// Used when a new `Tweet` is added or keyboard show/hide
     private func scrollToLatestTweet() {
         table.scrollToRow(
             at: IndexPath(row: data[data.count - 1].count - 1, section: data.count - 1),
@@ -97,15 +117,20 @@ class TweetViewController: UIViewController {
             animated: true
         )
     }
-    
 }
 
 extension TweetViewController: SettingDelegate {
+    
+    /// Update tweetViewModel's option
+    ///
+    /// - Parameter option: new option value
     func splitOptionChanged(to option: SplitOption) {
         tweetViewModel.options = option
     }
 }
 
+
+// MARK: - TABLE DELEGATE
 extension TweetViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return data.count
@@ -134,6 +159,12 @@ extension TweetViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    
+    /// Hide keyboard when user dragging on screen
+    ///
+    /// - Parameters:
+    ///   - scrollView:
+    ///   - decelerate:
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         if input.textView.isFirstResponder {
             input.textView.resignFirstResponder()
@@ -141,18 +172,31 @@ extension TweetViewController: UITableViewDelegate, UITableViewDataSource {
     }
 }
 
+
+// MARK: - TEXT VIEW DELEGATE
 extension TweetViewController: UITextViewDelegate {
+    
+    /// If user input message is about to exceed textview's max height (150)
+    /// Allows users to scroll this textview - works like iMessage
+    ///
+    /// - Parameter textView:
     func textViewDidChange(_ textView: UITextView) {
         textView.isScrollEnabled = textView.contentSize.height > 100
         input.hasUserInputContent = true
     }
     
+    /// Show/hide textview's placeholder
+    ///
+    /// - Parameter textView:
     func textViewDidBeginEditing(_ textView: UITextView) {
         if !input.hasUserInputContent {
             input.setPlaceHolderText(to: false)
         }
     }
     
+    /// Show/hide textview's placeholder
+    ///
+    /// - Parameter textView:
     func textViewDidEndEditing(_ textView: UITextView) {
         input.hasUserInputContent = !textView.text.isEmpty
         if textView.text.isEmpty {
@@ -163,6 +207,7 @@ extension TweetViewController: UITextViewDelegate {
 }
 
 
+/// MARK: - SETUP VIEWS AND CONSTRAINTS
 extension TweetViewController {
     private func setupViews() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(

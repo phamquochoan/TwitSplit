@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 
+/// Input view for `TweetViewController`
 class InputView: UIView {
     internal var textView: UITextView!
     internal var send: UIButton!
