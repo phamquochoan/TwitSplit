@@ -63,17 +63,16 @@ class SettingTableViewCell: UITableViewCell {
         }
         
         switchControl.snp.makeConstraints { x in
-            x.trailingMargin.equalToSuperview()
+            x.trailing.equalToSuperview().inset(15)
             x.centerY.equalToSuperview()
             x.width.equalTo(50)
         }
         
         cellTitle.snp.makeConstraints { x in
-            x.leadingMargin.equalToSuperview()
-            x.trailing.equalTo(switchControl.snp.leading)
+            x.top.leading.equalToSuperview().offset(15)
+            x.trailing.equalTo(switchControl.snp.leading).inset(15)
             x.centerY.equalToSuperview()
-            x.topMargin.equalToSuperview().offset(15)
-            x.bottomMargin.equalToSuperview().inset(15)
+            x.bottom.equalToSuperview().inset(15)
         }
         
         cellTitle.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
