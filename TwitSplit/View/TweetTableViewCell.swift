@@ -64,9 +64,10 @@ class TweetTableViewCell: UITableViewCell {
         
         contentLabel.snp.makeConstraints { x in
             x.leading.equalTo(counterLabel.snp.trailing).offset(15)
-            x.trailingMargin.centerY.equalToSuperview()
-            x.topMargin.equalToSuperview().offset(10)
-            x.bottomMargin.equalToSuperview().inset(10)
+            x.trailing.equalToSuperview().inset(15)
+//            x.centerY.equalToSuperview()
+            x.top.equalToSuperview().offset(10)
+            x.bottom.equalToSuperview().offset(-10)
         }
         
         contentLabel.setContentCompressionResistancePriority(.defaultHigh, for: .vertical)
