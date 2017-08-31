@@ -31,7 +31,7 @@ class TweetViewModel {
         if messageContent.count <= Config.tweetLimit { return [messageContent] }
         items = []
         totalTweets = 0
-        userInputMessage = messageContent
+        userInputMessage = " " + messageContent
         try processMessage(Substring(userInputMessage), validating: false)
     
         return items.map { $0.displayText }
@@ -77,7 +77,7 @@ class TweetViewModel {
     ///     `false`: increase counter after each loop (new `Tweet`) | `true`: stop increase counter (validate `Tweet`)
     /// - Throws: error if contains an exceed word
     private func processMessage(_ message: Substring, validating: Bool) throws {
-        print(message[message.startIndex..<message.index(message.startIndex, offsetBy: 100, limitedBy: message.endIndex)!])
+        
         guard !message.isEmpty else {
             try validateTweets()
             return
@@ -92,7 +92,7 @@ class TweetViewModel {
         let counter = Counter(index: items.count + 1, total: totalTweets)
         let tweetStartIndex: Substring.Index = message.startIndex
         let tweetEndIndex: Substring.Index = try getTweetEndIndex(in: message, counter: counter)
-        
+
         items += [
             Tweet(
                 counter: counter,
@@ -101,11 +101,10 @@ class TweetViewModel {
                 tweetEndIndex: tweetEndIndex
             )
         ]
+        
+        print("\(items.last!.displayText.count) | \(items.last!.displayText)|")
 
-        /// index(after:) is needed to trim the first white spaces on the next message
-        /// trimmingCharacters(.whiteSpaces) will violate data intergrity
-        let nextMessageIndex = message.index(tweetEndIndex, offsetBy: 1, limitedBy: message.endIndex) ?? message.endIndex
-        let nextMessage = message.suffix(from: nextMessageIndex)
+        let nextMessage = message.suffix(from: tweetEndIndex)
         try processMessage(nextMessage, validating: validating)
     }
     
@@ -139,6 +138,7 @@ class TweetViewModel {
         }
         
         /// Search for a `whiteSpace` backward in a valid range (include counter.characters.count)
+        message.index
         if let validRange = message.range(of: " ", options: .backwards, range: nextRange, locale: nil) {
             return validRange.lowerBound
         }
@@ -186,7 +186,7 @@ class TweetViewModel {
         items[index..<items.count] = []
         let string: Substring
         if let lastItem = items.last {
-            string = userInputMessage.suffix(from: userInputMessage.index(after: lastItem.tweetEndIndex))
+            string = userInputMessage.suffix(from: lastItem.tweetEndIndex)
         } else {
             string = Substring(userInputMessage)
         }

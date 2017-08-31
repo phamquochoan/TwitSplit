@@ -16,6 +16,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        UINavigationBar.appearance().barTintColor = .white
+        UINavigationBar.appearance().tintColor = .black
+        UINavigationBar.appearance().isTranslucent = false
+
+        
+        if let window = window {
+            window.rootViewController = UINavigationController(rootViewController: TweetViewController())
+            window.makeKeyAndVisible()
+        }
         return true
     }
 
